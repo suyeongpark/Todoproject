@@ -41,8 +41,8 @@ public class MainActivity extends Activity {
 
         textView.setText(editText.getText());
 
-        LinearLayout topLL = (LinearLayout)findViewById(R.id.mainLayout);
-        topLL.addView(textView, 2);
+        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
+        topLL.addView(textView, 0);
 
         editText.setText("");
     }
