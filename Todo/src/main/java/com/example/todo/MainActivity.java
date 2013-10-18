@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -29,15 +30,12 @@ public class MainActivity extends Activity {
 
         EditText editText = (EditText)findViewById(R.id.editText);
 
-        TextView textView;
-
-        int resID = getResources().getIdentifier(String.format("textView0%d", count), "id", getPackageName());
-        textView = (TextView) findViewById(resID);
-        count++;
-        if ( count > 3 )
-            count = 1;
-
+        TextView textView = new TextView(this);
         textView.setText(editText.getText());
+
+        LinearLayout topLL = (LinearLayout)findViewById(R.id.mainLayout);
+        topLL.addView(textView);
+
         editText.setText("");
     }
 
