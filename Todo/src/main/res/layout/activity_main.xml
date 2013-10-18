@@ -6,23 +6,36 @@
     android:orientation="vertical"
     android:id="@+id/mainLayout">
 
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText"
-            android:layout_alignParentTop="true"
-            android:inputType="text"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentLeft="true"
-            android:width="200dp"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity"
+        android:orientation="horizontal"
+        android:background="#9920ff">
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button"
-            android:layout_gravity="right|center_vertical"
-            android:onClick="mOnClick"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText"
+                android:layout_alignParentTop="true"
+                android:inputType="text"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
+                android:width="200dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/button"
+                android:layout_gravity="right|center_vertical"
+                android:background="#6666ff"
+                android:onClick="mOnClick"
+            android:padding="5dp"
+            android:paddingLeft="15dp" />
+
+    </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
