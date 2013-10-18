@@ -1,5 +1,6 @@
 package com.example.todo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -31,10 +32,17 @@ public class MainActivity extends Activity {
         EditText editText = (EditText)findViewById(R.id.editText);
 
         TextView textView = new TextView(this);
+
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        textView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+        textView.setPadding(20, 10, 10, 10);
+        textView.setTextColor(Color.parseColor("#FF7200"));
+        textView.setTextSize(13);
+
         textView.setText(editText.getText());
 
         LinearLayout topLL = (LinearLayout)findViewById(R.id.mainLayout);
-        topLL.addView(textView);
+        topLL.addView(textView, 2);
 
         editText.setText("");
     }
