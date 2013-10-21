@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -33,6 +34,8 @@ public class MainActivity extends Activity {
 
         TextView textView = new TextView(this);
 
+        //ScrollView scrollView = (ScrollView)findViewById(R.id.scroll);
+
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         textView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         textView.setPadding(20, 10, 10, 10);
@@ -45,6 +48,7 @@ public class MainActivity extends Activity {
         topLL.addView(textView, 0);
 
         editText.setText("");
+        //scrollView.setVerticalScrollbarPosition(0);
     }
 
 }
