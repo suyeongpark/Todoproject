@@ -31,7 +31,6 @@
                 android:id="@+id/button"
                 android:layout_gravity="right|center_vertical"
                 android:background="#6666ff"
-                android:onClick="mOnClick"
             android:padding="5dp"
             android:paddingLeft="15dp" />
 
