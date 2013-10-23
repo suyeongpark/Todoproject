@@ -10,10 +10,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     int count = 1;
+
+    class ButtonClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(view.getContext(), "clicked", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +30,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         Button button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(this);
+        button.setOnClickListener(new ButtonClickListener());
+//        button.setOnClickListener(this);
     }
 
 
