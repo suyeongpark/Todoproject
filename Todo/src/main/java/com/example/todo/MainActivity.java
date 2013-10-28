@@ -1,6 +1,8 @@
 package com.example.todo;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
@@ -84,6 +86,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
         topLL.addView(textView, 0);
 
         editText.setText("");
+    }
+
+    public void onDbClick(View view) {
+        LocalDB dbHelper = new LocalDB(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("INSERT INTO db_user (content) VALUES('abc');");
+
+        Cursor c = db.rawQuery("SELECT id, content FROM db_user", null);
+        c.moveToFirst();
+        System.out.println("  --- column count : " + c.getColumnCount());
+        System.out.println("  --- count : " + c.getCount());
+
+        Toast.makeText(this, c.getString(1), Toast.LENGTH_SHORT).show();
     }
 
 //    public void mOnClick(View v) {
