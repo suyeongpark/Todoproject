@@ -43,7 +43,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
             setText(text);
         }
 
-        public boolean onTouchEvent(android.view.MotionEvent event) {
+        public MyTextView(Context context, String text) {
+            super(context);
+
+            setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            setBackgroundColor(Color.parseColor("#00FFFFFF"));
+            setPadding(20, 10, 10, 10);
+            setTextColor(Color.parseColor("#FF7200"));
+            setTextSize(13);
+
+            setText(text);
+        }
+
+            public boolean onTouchEvent(android.view.MotionEvent event) {
             Toast.makeText(getContext(), "My Text View", Toast.LENGTH_LONG).show();
 
             return false;
@@ -71,6 +83,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         LocalDB dbHelper = new LocalDB(this);
         db = dbHelper.getWritableDatabase();
+
+        loadToDoList();
+    }
+
+    private void loadToDoList() {
+        Cursor c = db.rawQuery("SELECT id, content FROM db_user ORDER BY id ASC", null);
+        c.moveToFirst();
+
+        for ( int i = 0 ; i < c.getCount(); i++ ) {
+            TextView textView = new MyTextView(this, c.getString(1));
+
+            LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
+            topLL.addView(textView, 0);
+
+            c.moveToNext();
+        }
     }
 
     @Override
