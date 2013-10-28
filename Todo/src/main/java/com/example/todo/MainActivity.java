@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnClickListener {
+    SQLiteDatabase db;
 
     int count = 1;
 //
@@ -63,11 +64,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 ((MainActivity)view.getContext()).onClick(view);
-                Toast.makeText(view.getContext(), "clicked", Toast.LENGTH_LONG).show();
             }
         };
 
         button.setOnClickListener( a );
+
+        LocalDB dbHelper = new LocalDB(this);
+        db = dbHelper.getWritableDatabase();
     }
 
     @Override
@@ -85,15 +88,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
         topLL.addView(textView, 0);
 
+        db.execSQL("INSERT INTO db_user (content) VALUES ('" + editText.getText() + "');");
         editText.setText("");
     }
 
     public void onDbClick(View view) {
-        LocalDB dbHelper = new LocalDB(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("INSERT INTO db_user (content) VALUES('abc');");
-
-        Cursor c = db.rawQuery("SELECT id, content FROM db_user", null);
+        Cursor c = db.rawQuery("SELECT id, content FROM db_user ORDER BY id DESC", null);
         c.moveToFirst();
         System.out.println("  --- column count : " + c.getColumnCount());
         System.out.println("  --- count : " + c.getCount());
