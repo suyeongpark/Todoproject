@@ -1,27 +1,20 @@
 package com.example.todo.activity;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
-import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.todo.db.LocalDB;
 import com.example.todo.R;
+import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
 public class MainActivity extends Activity {
-    SQLiteDatabase db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +29,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        LocalDB dbHelper = new LocalDB(this);
-        db = dbHelper.getWritableDatabase();
+        PersistantModel.initialize(this);
 
         loadToDoList();
     }
@@ -49,37 +41,41 @@ public class MainActivity extends Activity {
         return true;
     }
 
-
     private void loadToDoList() {
-        Cursor c = db.rawQuery("SELECT id, content FROM db_user ORDER BY id ASC", null);
+        Cursor c = PersistantModel.getItems();
         c.moveToFirst();
 
         for ( int i = 0 ; i < c.getCount(); i++ ) {
-            addTodoItem(c.getString(1));
+            addTodoItem(c.getInt(0), c.getString(1));
             c.moveToNext();
         }
     }
 
-    private void addTodoItem(String text) {
-        TextView textView = new TodoItemView(this, text);
+    private void addTodoItem(int id, String text) {
+        View todoItem = new TodoItemView(this, id, text);
 
         LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
-        topLL.addView(textView, 0);
+        topLL.addView(todoItem, 0);
     }
 
+    public void deleteTodoItem(int id, TodoItemView view) {
+        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
+        topLL.removeView(view);
+    }
 
     public void onClick(View view) {
         EditText editText = (EditText)findViewById(R.id.editText);
         String text = editText.getText().toString();
 
-        db.execSQL("INSERT INTO db_user (content) VALUES ('" + text + "');");
-        addTodoItem(text);
+        int id = PersistantModel.createItem(text);
+        addTodoItem(id, text);
+
         editText.setText("");
     }
 
     public void onDbClick(View view) {
-        Cursor c = db.rawQuery("SELECT id, content FROM db_user ORDER BY id DESC", null);
-        c.moveToFirst();
+        Cursor c = PersistantModel.getItems();
+        c.moveToLast();
         System.out.println("  --- column count : " + c.getColumnCount());
         System.out.println("  --- count : " + c.getCount());
 
