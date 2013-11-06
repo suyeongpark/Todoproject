@@ -28,7 +28,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="New"
-                android:id="@+id/button"
+                android:id="@+id/newBtn"
                 android:layout_gravity="right|center_vertical"
                 android:background="#6666ff"
             android:padding="5dp"

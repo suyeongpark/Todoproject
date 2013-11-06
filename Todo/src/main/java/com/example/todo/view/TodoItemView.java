@@ -20,38 +20,48 @@ import com.example.todo.db.PersistantModel;
  */
 
 public class TodoItemView extends LinearLayout implements View.OnClickListener {
-    public int id;
+    public int rowId;
 
-    public TodoItemView(Context context, int id, String text) {
+    public TodoItemView(Context context, int rowId, String text) {
         super(context);
 
-        this.id = id;
+        this.rowId = rowId;
 
-        TextView textView = new TextView(context);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        textView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
-        textView.setPadding(20, 10, 10, 10);
-        textView.setTextColor(Color.parseColor("#FF7200"));
-        textView.setTextSize(13);
-        textView.setText(id + " -- " + text);
+//        TextView textView = new TextView(context);
+//        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//        textView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+//        textView.setPadding(20, 10, 10, 10);
+//        textView.setTextColor(Color.parseColor("#FF7200"));
+//        textView.setTextSize(13);
+//        textView.setText(id + " -- " + text);
+//
+//        addView(textView);
+//
+//        Button deleteBtn = new Button(context);
+//        deleteBtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//        deleteBtn.setBackgroundColor(Color.parseColor("#00FF00FF"));
+//        deleteBtn.setPadding(20, 10, 10, 10);
+//        deleteBtn.setTextColor(Color.parseColor("#FF7200"));
+//        deleteBtn.setTextSize(13);
+//        deleteBtn.setText("X");
+//        deleteBtn.setOnClickListener(this);
+//
+//        addView(deleteBtn);
 
-        addView(textView);
+        View item = View.inflate(getContext(), R.layout.todo_item, null);
 
-        Button deleteBtn = new Button(context);
-        deleteBtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        deleteBtn.setBackgroundColor(Color.parseColor("#00FF00FF"));
-        deleteBtn.setPadding(20, 10, 10, 10);
-        deleteBtn.setTextColor(Color.parseColor("#FF7200"));
-        deleteBtn.setTextSize(13);
-        deleteBtn.setText("X");
+        TextView textView = (TextView)item.findViewById(R.id.textView);
+        textView.setText(rowId + " -- " + text);
+
+        Button deleteBtn = (Button)item.findViewById(R.id.delBtn);
         deleteBtn.setOnClickListener(this);
 
-        addView(deleteBtn);
+        addView(item);
     }
 
     @Override
     public void onClick(View view) {
-        PersistantModel.deleteItem(id);
-        ((MainActivity)getContext()).deleteTodoItem(this.id, this);
+        PersistantModel.deleteItem(rowId);
+        ((MainActivity)getContext()).deleteTodoItem(rowId, this);
     }
 }
