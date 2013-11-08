@@ -20,11 +20,11 @@ public class PersistantModel {
     }
 
     public static Cursor getItems() {
-        return db.rawQuery("SELECT id, content FROM db_user ORDER BY id ASC", null);
+        return db.rawQuery("SELECT id, content, priority FROM db_user ORDER BY id ASC", null);
     }
 
-    public static int createItem(String text) {
-        db.execSQL("INSERT INTO db_user (content) VALUES ('" + text + "');");
+    public static int createItem(String text, int priority) {
+        db.execSQL("INSERT INTO db_user (content, priority) VALUES ('" + text + "', " + priority + ");");
         Cursor c = db.rawQuery("SELECT id FROM db_user ORDER BY id DESC LIMIT 1", null);
         c.moveToFirst();
         return c.getInt(0);

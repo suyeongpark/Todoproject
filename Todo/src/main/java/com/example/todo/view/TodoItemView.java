@@ -22,7 +22,7 @@ import com.example.todo.db.PersistantModel;
 public class TodoItemView extends LinearLayout implements View.OnClickListener {
     public int rowId;
 
-    public TodoItemView(Context context, int rowId, String text) {
+    public TodoItemView(Context context, int rowId, String text, int priority) {
         super(context);
 
         this.rowId = rowId;
@@ -51,7 +51,7 @@ public class TodoItemView extends LinearLayout implements View.OnClickListener {
         View item = View.inflate(getContext(), R.layout.todo_item, null);
 
         TextView textView = (TextView)item.findViewById(R.id.textView);
-        textView.setText(rowId + " -- " + text);
+        textView.setText(priority + " -- " + text);
 
         Button deleteBtn = (Button)item.findViewById(R.id.delBtn);
         deleteBtn.setOnClickListener(this);

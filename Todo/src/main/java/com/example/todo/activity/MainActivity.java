@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.todo.R;
@@ -25,7 +27,7 @@ public class MainActivity extends Activity {
         newBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)view.getContext()).onClick(view);
+                ((MainActivity)view.getContext()).onNewClick(view);
             }
         });
 
@@ -46,13 +48,13 @@ public class MainActivity extends Activity {
         c.moveToFirst();
 
         for ( int i = 0 ; i < c.getCount(); i++ ) {
-            addTodoItem(c.getInt(0), c.getString(1));
+            addTodoItem(c.getInt(0), c.getString(1), c.getInt(2));
             c.moveToNext();
         }
     }
 
-    private void addTodoItem(int id, String text) {
-        View todoItem = new TodoItemView(this, id, text);
+    private void addTodoItem(int id, String text, int priority) {
+        View todoItem = new TodoItemView(this, id, text, priority);
 
         LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
         topLL.addView(todoItem, 0);
@@ -63,12 +65,25 @@ public class MainActivity extends Activity {
         topLL.removeView(view);
     }
 
-    public void onClick(View view) {
+    public void onNewClick(View view) {
         EditText editText = (EditText)findViewById(R.id.editText);
-        String text = editText.getText().toString();
+        //RadioGroup rg = (RadioGroup)findViewById(R.id.radio);
+        RadioButton rb1 = (RadioButton)findViewById(R.id.radioButton);
+        RadioButton rb2 = (RadioButton)findViewById(R.id.radioButton2);
+        RadioButton rb3 = (RadioButton)findViewById(R.id.radioButton3);
 
-        int id = PersistantModel.createItem(text);
-        addTodoItem(id, text);
+        String text = editText.getText().toString();
+        int priority = 3;
+
+        if ( rb1.isChecked() )
+            priority = 1;
+        else if ( rb2.isChecked() )
+            priority = 3;
+        else if ( rb3.isChecked() )
+            priority = 5;
+
+        int id = PersistantModel.createItem(text, priority);
+        addTodoItem(id, text, priority);
 
         editText.setText("");
     }
