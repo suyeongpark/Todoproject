@@ -26,3 +26,11 @@ public class LocalDB extends SQLiteOpenHelper {
 //        db.execSQL("ALTER TABLE db_user ADD COLUMN priority int;");
     }
 }
+
+/**
+ *
+ * http://stackoverflow.com/questions/3505900/sqliteopenhelper-onupgrade-confusion-android
+ *
+ * http://grepcode.com/file_/repository.grepcode.com/java/ext/com.google.android/android-apps/4.0.1_r1/com/android/providers/calendar/CalendarDatabaseHelper.java/?v=source
+ *
+ */

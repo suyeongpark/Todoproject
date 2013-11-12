@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.todo.R;
@@ -17,10 +19,17 @@ import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
 public class MainActivity extends Activity {
+    private Spinner _spinner_priority;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        _spinner_priority = (Spinner)findViewById(R.id.spinner_priority);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
+        _spinner_priority.setAdapter(adapter);
 
         Button newBtn = (Button)findViewById(R.id.newBtn);
 

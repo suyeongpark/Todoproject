@@ -5,4 +5,10 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
+    <string-array name="priority_array">
+        <item>important</item>
+        <item>보통</item>
+        <item>덜 중요</item>
+    </string-array>
+
 </resources>
