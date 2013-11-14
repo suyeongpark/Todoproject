@@ -2,14 +2,14 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:divider="@android:drawable/arrow_down_float">
 
     <TextView
         android:layout_width="246dp"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/textView"
-        android:background="#ff0000" />
+        android:id="@+id/textView" />
 
     <Button
         android:layout_width="wrap_content"

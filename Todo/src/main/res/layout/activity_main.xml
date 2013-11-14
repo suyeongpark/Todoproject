@@ -34,13 +34,6 @@
             android:padding="5dp"
             android:paddingLeft="15dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="DB"
-            android:id="@+id/button2"
-            android:onClick="onDbClick" />
-
     </LinearLayout>
 
     <Spinner

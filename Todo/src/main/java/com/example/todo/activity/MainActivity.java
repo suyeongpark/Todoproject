@@ -109,15 +109,6 @@ public class MainActivity extends Activity {
         editText.setText("");
     }
 
-    public void onDbClick(View view) {
-        Cursor c = PersistantModel.getItems();
-        c.moveToLast();
-        System.out.println("  --- column count : " + c.getColumnCount());
-        System.out.println("  --- count : " + c.getCount());
-
-        Toast.makeText(this, c.getString(1), Toast.LENGTH_SHORT).show();
-    }
-
     class MyDragListener implements View.OnDragListener {
         Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
         Drawable normalShape = getResources().getDrawable(R.drawable.shape);
