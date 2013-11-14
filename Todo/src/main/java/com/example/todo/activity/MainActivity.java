@@ -23,6 +23,8 @@ import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
 public class MainActivity extends Activity {
+    private static final String LOG_TAG = "MainActivity";
+
     private Spinner _spinner_priority;
 
     @Override
@@ -70,15 +72,15 @@ public class MainActivity extends Activity {
     }
 
     private void addTodoItem(int id, String text, int priority) {
-        View todoItem = new TodoItemView(this, id, text, priority);
+        View todoItem = new TodoItemView(this, id, text, priority).getView();
 
         LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
         topLL.addView(todoItem, 0);
     }
 
-    public void deleteTodoItem(int id, TodoItemView view) {
+    public void deleteTodoItem(int id, TodoItemView item) {
         LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
-        topLL.removeView(view);
+        topLL.removeView(item.getView());
     }
 
     public void onNewClick(View view) {
@@ -89,7 +91,12 @@ public class MainActivity extends Activity {
         RadioButton rb3 = (RadioButton)findViewById(R.id.radioButton3);
 
         String text = editText.getText().toString();
+
+        // priority 확인
         int priority = 3;
+
+        Log.i(getLocalClassName(), "Selected Item:" + _spinner_priority.getSelectedItem());
+        Log.i(getLocalClassName(), "Selected ItemId: " + _spinner_priority.getSelectedItemId());
 
         if ( rb1.isChecked() )
             priority = 1;
@@ -120,6 +127,7 @@ public class MainActivity extends Activity {
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int action = event.getAction();
+            View src = (View)event.getLocalState();
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     Log.i("DragAction", "ACTION_DRAG_STARTED : ");
@@ -136,16 +144,16 @@ public class MainActivity extends Activity {
                 case DragEvent.ACTION_DROP:
                     Log.i("DragAction", "ACTION_DROP : ");
                     // Dropped, reassign View to ViewGroup
-                    View view = (View) event.getLocalState();
-                    ViewGroup owner = (ViewGroup) view.getParent();
-                    owner.removeView(view);
+                    ViewGroup owner = (ViewGroup) src.getParent();
+                    owner.removeView(src);
 //                    LinearLayout container = (LinearLayout) v;
 //                    container.addView(view);
-                    owner.addView(view, 0);
-                    view.setVisibility(View.VISIBLE);
+                    owner.addView(src, 0);
+                    src.setVisibility(View.VISIBLE);
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     Log.i("DragAction", "ACTION_DRAG_ENDED : ");
+                    src.setVisibility(View.VISIBLE);
 //                    v.setBackgroundDrawable(normalShape);
                 default:
                     break;
