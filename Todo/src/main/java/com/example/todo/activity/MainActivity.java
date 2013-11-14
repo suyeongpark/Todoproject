@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
         _spinner_priority = (Spinner)findViewById(R.id.spinner_priority);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _spinner_priority.setAdapter(adapter);
 
         Button newBtn = (Button)findViewById(R.id.newBtn);
@@ -47,12 +48,11 @@ public class MainActivity extends Activity {
             }
         });
 
-        PersistantModel.initialize(this);
-
-        loadToDoList();
-
         _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
         _layout_todolist.setOnDragListener(new MyDragListener());
+
+        PersistantModel.initialize(this);
+        loadToDoList();
     }
 
     @Override
