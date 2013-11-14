@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _spinner_priority.setAdapter(adapter);
+        _spinner_priority.setSelection(1);
 
         Button newBtn = (Button)findViewById(R.id.newBtn);
 
@@ -84,25 +85,23 @@ public class MainActivity extends Activity {
 
     public void onNewClick(View view) {
         EditText editText = (EditText)findViewById(R.id.editText);
-        //RadioGroup rg = (RadioGroup)findViewById(R.id.radio);
-        RadioButton rb1 = (RadioButton)findViewById(R.id.radioButton);
-        RadioButton rb2 = (RadioButton)findViewById(R.id.radioButton2);
-        RadioButton rb3 = (RadioButton)findViewById(R.id.radioButton3);
-
         String text = editText.getText().toString();
 
         // priority 확인
         int priority = 3;
+        int selected = (int)_spinner_priority.getSelectedItemId();
 
-        Log.i(getLocalClassName(), "Selected Item:" + _spinner_priority.getSelectedItem());
-        Log.i(getLocalClassName(), "Selected ItemId: " + _spinner_priority.getSelectedItemId());
-
-        if ( rb1.isChecked() )
-            priority = 1;
-        else if ( rb2.isChecked() )
-            priority = 3;
-        else if ( rb3.isChecked() )
-            priority = 5;
+        switch ( selected ) {
+            case 0:
+                priority = 1;
+                break;
+            case 1:
+                priority = 3;
+                break;
+            case 2:
+                priority = 5;
+                break;
+        }
 
         int id = PersistantModel.createItem(text, priority);
         addTodoItem(id, text, priority);
