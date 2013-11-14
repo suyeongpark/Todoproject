@@ -25,6 +25,7 @@ import com.example.todo.view.TodoItemView;
 public class MainActivity extends Activity {
     private static final String LOG_TAG = "MainActivity";
 
+    private ViewGroup _layout_todolist;
     private Spinner _spinner_priority;
 
     @Override
@@ -50,8 +51,8 @@ public class MainActivity extends Activity {
 
         loadToDoList();
 
-        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
-        topLL.setOnDragListener(new MyDragListener());
+        _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
+        _layout_todolist.setOnDragListener(new MyDragListener());
     }
 
     @Override
@@ -74,13 +75,11 @@ public class MainActivity extends Activity {
     private void addTodoItem(int id, String text, int priority) {
         View todoItem = new TodoItemView(this, id, text, priority).getView();
 
-        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
-        topLL.addView(todoItem, 0);
+        _layout_todolist.addView(todoItem, 0);
     }
 
     public void deleteTodoItem(int id, TodoItemView item) {
-        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
-        topLL.removeView(item.getView());
+        _layout_todolist.removeView(item.getView());
     }
 
     public void onNewClick(View view) {
