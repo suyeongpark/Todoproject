@@ -1,8 +1,10 @@
 package com.example.todo.view;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.Button;
@@ -19,7 +21,8 @@ import com.example.todo.db.PersistantModel;
  * Created by bayja on 2013. 10. 29..
  */
 
-public class TodoItemView extends LinearLayout implements View.OnClickListener {
+public class TodoItemView extends LinearLayout implements View.OnClickListener, View.OnLongClickListener {
+    private static int[] colors = {Color.parseColor("#FF0000"), Color.parseColor("#000000"), Color.parseColor("#00FF00"), Color.parseColor("#000000"), Color.parseColor("#0000FF")};
     public int rowId;
 
     public TodoItemView(Context context, int rowId, String text, int priority) {
@@ -27,34 +30,19 @@ public class TodoItemView extends LinearLayout implements View.OnClickListener {
 
         this.rowId = rowId;
 
-//        TextView textView = new TextView(context);
-//        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//        textView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
-//        textView.setPadding(20, 10, 10, 10);
-//        textView.setTextColor(Color.parseColor("#FF7200"));
-//        textView.setTextSize(13);
-//        textView.setText(id + " -- " + text);
-//
-//        addView(textView);
-//
-//        Button deleteBtn = new Button(context);
-//        deleteBtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//        deleteBtn.setBackgroundColor(Color.parseColor("#00FF00FF"));
-//        deleteBtn.setPadding(20, 10, 10, 10);
-//        deleteBtn.setTextColor(Color.parseColor("#FF7200"));
-//        deleteBtn.setTextSize(13);
-//        deleteBtn.setText("X");
-//        deleteBtn.setOnClickListener(this);
-//
-//        addView(deleteBtn);
-
         View item = View.inflate(getContext(), R.layout.todo_item, null);
+        item.setBackgroundColor(colors[priority-1]);
+//        item.setBackgroundColor(colors[priority-1]);
 
         TextView textView = (TextView)item.findViewById(R.id.textView);
         textView.setText(priority + " -- " + text);
 
         Button deleteBtn = (Button)item.findViewById(R.id.delBtn);
         deleteBtn.setOnClickListener(this);
+
+//        this.setLayoutParams(new LayoutParams());
+
+        setOnLongClickListener(this);
 
         addView(item);
     }
@@ -63,5 +51,14 @@ public class TodoItemView extends LinearLayout implements View.OnClickListener {
     public void onClick(View view) {
         PersistantModel.deleteItem(rowId);
         ((MainActivity)getContext()).deleteTodoItem(rowId, this);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        ClipData data = ClipData.newPlainText("", "");
+        DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+        view.startDrag(data, shadowBuilder, view, 0);
+        view.setVisibility(View.INVISIBLE);
+        return true;
     }
 }

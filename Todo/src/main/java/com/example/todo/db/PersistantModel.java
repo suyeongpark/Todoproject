@@ -20,7 +20,7 @@ public class PersistantModel {
     }
 
     public static Cursor getItems() {
-        return db.rawQuery("SELECT id, content, priority FROM db_user ORDER BY id ASC", null);
+        return db.rawQuery("SELECT id, content, priority FROM db_user ORDER BY priority DESC", null);
     }
 
     public static int createItem(String text, int priority) {

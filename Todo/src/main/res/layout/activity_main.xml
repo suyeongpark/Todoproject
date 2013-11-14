@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/todoListLayout"
-            android:background="#0020ff">
+            android:background="#f0f0f0">
         </LinearLayout>
 
     </ScrollView>

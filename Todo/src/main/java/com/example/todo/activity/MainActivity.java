@@ -1,10 +1,14 @@
 package com.example.todo.activity;
 
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,6 +19,8 @@ import android.widget.Toast;
 import com.example.todo.R;
 import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
+
+import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
     @Override
@@ -34,6 +40,9 @@ public class MainActivity extends Activity {
         PersistantModel.initialize(this);
 
         loadToDoList();
+
+        LinearLayout topLL = (LinearLayout)findViewById(R.id.todoListLayout);
+        topLL.setOnDragListener(new MyDragListener());
     }
 
     @Override
@@ -97,4 +106,44 @@ public class MainActivity extends Activity {
         Toast.makeText(this, c.getString(1), Toast.LENGTH_SHORT).show();
     }
 
+    class MyDragListener implements View.OnDragListener {
+        Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
+        Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    Log.i("DragAction", "ACTION_DRAG_STARTED : ");
+                    // do nothing
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+//                    v.setBackgroundDrawable(enterShape);
+                    Log.i("DragAction", "ACTION_DRAG_ENTERED : ");
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    Log.i("DragAction", "ACTION_DRAG_EXITED : ");
+//                    v.setBackgroundDrawable(normalShape);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.i("DragAction", "ACTION_DROP : ");
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+//                    LinearLayout container = (LinearLayout) v;
+//                    container.addView(view);
+                    owner.addView(view, 0);
+                    view.setVisibility(View.VISIBLE);
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    Log.i("DragAction", "ACTION_DRAG_ENDED : ");
+//                    v.setBackgroundDrawable(normalShape);
+                default:
+                    break;
+            }
+            return true;
+        }
+    }
 }
