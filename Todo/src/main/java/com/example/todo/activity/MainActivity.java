@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
         _spinner_priority.setAdapter(adapter);
         _spinner_priority.setSelection(1);
 
-        Button newBtn = (Button)findViewById(R.id.newBtn);
+        Button newBtn = (Button)findViewById(R.id.btnNew);
 
         newBtn.setOnClickListener( new View.OnClickListener() {
             @Override

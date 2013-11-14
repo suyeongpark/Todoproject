@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/mainLayout">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,27 +14,29 @@
         android:orientation="horizontal"
         android:background="#9920ff">
 
+        <Button
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:text="New"
+            android:id="@+id/btnNew"
+            android:layout_centerVertical="true"
+            android:background="#6666ff"
+            android:padding="5dp"
+            android:layout_alignParentRight="true" />
+
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText"
-                android:layout_alignParentTop="true"
-                android:inputType="text"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="true"
-                android:width="200dp"/>
+            android:inputType="text"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/btnNew"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp" />
 
-        <Button
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="New"
-                android:id="@+id/newBtn"
-                android:layout_gravity="right|center_vertical"
-                android:background="#6666ff"
-            android:padding="5dp"
-            android:paddingLeft="15dp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <Spinner
         android:layout_width="fill_parent"
@@ -49,7 +51,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/todoListLayout"
             android:background="#f0f0f0">
