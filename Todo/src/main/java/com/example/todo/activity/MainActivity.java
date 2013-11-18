@@ -3,7 +3,6 @@ package com.example.todo.activity;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.todo.R;
@@ -25,7 +25,8 @@ public class MainActivity extends Activity implements View.OnDragListener {
     private static final String LOG_TAG = "MainActivity";
 
     private LinearLayout mainLayout;
-    private ViewGroup _layout_todolist;
+//    private ViewGroup _layout_todolist;
+    private ListView _list_todo;
     private Spinner _spinner_priority;
 
     @Override
@@ -51,11 +52,11 @@ public class MainActivity extends Activity implements View.OnDragListener {
             }
         });
 
-        _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
-        _layout_todolist.setOnDragListener(this);
+//        _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
+//        _layout_todolist.setOnDragListener(this);
 
         PersistantModel.initialize(this);
-        loadToDoList();
+//        loadToDoList();
     }
 
     @Override
@@ -79,11 +80,11 @@ public class MainActivity extends Activity implements View.OnDragListener {
         View todoItem = new TodoItemView(this, id, text, priority).getView();
 //        todoItem.setOnDragListener(this);
 
-        _layout_todolist.addView(todoItem, 0);
+//        _layout_todolist.addView(todoItem, 0);
     }
 
     public void deleteTodoItem(int id, TodoItemView item) {
-        _layout_todolist.removeView(item.getView());
+//        _layout_todolist.removeView(item.getView());
     }
 
     public void onNewClick(View view) {
@@ -111,7 +112,7 @@ public class MainActivity extends Activity implements View.OnDragListener {
 
         editText.setText("");
     }
-
+/*
     private int calcDropIndex(DragEvent dragEvent) {
 //        Log.i("DragAction", "  x = " + dragEvent.getX());
 //        Log.i("DragAction", "  y = " + dragEvent.getY());
@@ -132,41 +133,42 @@ public class MainActivity extends Activity implements View.OnDragListener {
 
         return 0;
     }
-
+*/
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
-        int action = dragEvent.getAction();
-        View src = (View)dragEvent.getLocalState();
-        Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
-        Drawable normalShape = getResources().getDrawable(R.drawable.shape);
-        int index;
-
-        switch ( action ) {
-            case DragEvent.ACTION_DRAG_STARTED:
-                break;
-            case DragEvent.ACTION_DRAG_LOCATION:
-                index = calcDropIndex(dragEvent);
-                Log.i("DragAction", "  index = " + index);
-                Log.i("DragAction", _layout_todolist.getChildAt(index).toString());
-                break;
-            case DragEvent.ACTION_DROP:
-                index = calcDropIndex(dragEvent);
-                _layout_todolist.removeView(src);
-                _layout_todolist.addView(src, index);
-                src.setVisibility(View.VISIBLE);
-                break;
-            case DragEvent.ACTION_DRAG_ENDED:
-                if ( !dragEvent.getResult() )
-                    src.setVisibility(View.VISIBLE);
-                break;
-            case DragEvent.ACTION_DRAG_ENTERED:
-                break;
-            case DragEvent.ACTION_DRAG_EXITED:
-                break;
-            default:
-                return true;
-        }
-
-        return true;
+//        int action = dragEvent.getAction();
+//        View src = (View)dragEvent.getLocalState();
+//        Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
+//        Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+//        int index;
+//
+//        switch ( action ) {
+//            case DragEvent.ACTION_DRAG_STARTED:
+//                break;
+//            case DragEvent.ACTION_DRAG_LOCATION:
+//                index = calcDropIndex(dragEvent);
+//                Log.i("DragAction", "  index = " + index);
+//                Log.i("DragAction", _layout_todolist.getChildAt(index).toString());
+//                break;
+//            case DragEvent.ACTION_DROP:
+//                index = calcDropIndex(dragEvent);
+//                _layout_todolist.removeView(src);
+//                _layout_todolist.addView(src, index);
+//                src.setVisibility(View.VISIBLE);
+//                break;
+//            case DragEvent.ACTION_DRAG_ENDED:
+//                if ( !dragEvent.getResult() )
+//                    src.setVisibility(View.VISIBLE);
+//                break;
+//            case DragEvent.ACTION_DRAG_ENTERED:
+//                break;
+//            case DragEvent.ACTION_DRAG_EXITED:
+//                break;
+//            default:
+//                return true;
+//        }
+//
+//        return true;
+        return false;
     }
 }
