@@ -52,6 +52,13 @@ public class MainActivity extends Activity implements View.OnDragListener {
             }
         });
 
+        String[] myStringArray = {"ABC", "DEF"};
+
+        ArrayAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);
+
+        _list_todo = (ListView)findViewById(R.id.list_todo);
+        _list_todo.setAdapter(listAdapter);
+
 //        _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
 //        _layout_todolist.setOnDragListener(this);
 
