@@ -3,6 +3,7 @@ package com.example.todo.activity;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,17 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.todo.R;
 import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnDragListener {
     private static final String LOG_TAG = "MainActivity";
 
+    private LinearLayout mainLayout;
     private ViewGroup _layout_todolist;
     private Spinner _spinner_priority;
 
@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainLayout = (LinearLayout)findViewById(R.id.mainLayout);
 
         _spinner_priority = (Spinner)findViewById(R.id.spinner_priority);
 
@@ -50,7 +52,7 @@ public class MainActivity extends Activity {
         });
 
         _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
-        _layout_todolist.setOnDragListener(new MyDragListener());
+        _layout_todolist.setOnDragListener(this);
 
         PersistantModel.initialize(this);
         loadToDoList();
@@ -75,6 +77,7 @@ public class MainActivity extends Activity {
 
     private void addTodoItem(int id, String text, int priority) {
         View todoItem = new TodoItemView(this, id, text, priority).getView();
+//        todoItem.setOnDragListener(this);
 
         _layout_todolist.addView(todoItem, 0);
     }
@@ -109,45 +112,61 @@ public class MainActivity extends Activity {
         editText.setText("");
     }
 
-    class MyDragListener implements View.OnDragListener {
+    private int calcDropIndex(DragEvent dragEvent) {
+//        Log.i("DragAction", "  x = " + dragEvent.getX());
+//        Log.i("DragAction", "  y = " + dragEvent.getY());
+
+//        Log.i("DragAction", "  container.y = " + _layout_todolist.getY());
+//        Log.i("DragAction", "  container.scrollY = " + _layout_todolist.getScrollY());
+
+        float eventY = dragEvent.getY();
+        int sumHeight = 0;
+        for ( int i = 0 ; i < _layout_todolist.getChildCount() ; i++ )
+        {
+            int childHeight = _layout_todolist.getChildAt(i).getHeight();
+            if ( eventY >= sumHeight && eventY < sumHeight + childHeight )
+                return i;
+
+            sumHeight += childHeight;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public boolean onDrag(View view, DragEvent dragEvent) {
+        int action = dragEvent.getAction();
+        View src = (View)dragEvent.getLocalState();
         Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
         Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+        int index;
 
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            int action = event.getAction();
-            View src = (View)event.getLocalState();
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    Log.i("DragAction", "ACTION_DRAG_STARTED : ");
-                    // do nothing
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-//                    v.setBackgroundDrawable(enterShape);
-                    Log.i("DragAction", "ACTION_DRAG_ENTERED : ");
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    Log.i("DragAction", "ACTION_DRAG_EXITED : ");
-//                    v.setBackgroundDrawable(normalShape);
-                    break;
-                case DragEvent.ACTION_DROP:
-                    Log.i("DragAction", "ACTION_DROP : ");
-                    // Dropped, reassign View to ViewGroup
-                    ViewGroup owner = (ViewGroup) src.getParent();
-                    owner.removeView(src);
-//                    LinearLayout container = (LinearLayout) v;
-//                    container.addView(view);
-                    owner.addView(src, 0);
+        switch ( action ) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                break;
+            case DragEvent.ACTION_DRAG_LOCATION:
+                index = calcDropIndex(dragEvent);
+                Log.i("DragAction", "  index = " + index);
+                Log.i("DragAction", _layout_todolist.getChildAt(index).toString());
+                break;
+            case DragEvent.ACTION_DROP:
+                index = calcDropIndex(dragEvent);
+                _layout_todolist.removeView(src);
+                _layout_todolist.addView(src, index);
+                src.setVisibility(View.VISIBLE);
+                break;
+            case DragEvent.ACTION_DRAG_ENDED:
+                if ( !dragEvent.getResult() )
                     src.setVisibility(View.VISIBLE);
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    Log.i("DragAction", "ACTION_DRAG_ENDED : ");
-                    src.setVisibility(View.VISIBLE);
-//                    v.setBackgroundDrawable(normalShape);
-                default:
-                    break;
-            }
-            return true;
+                break;
+            case DragEvent.ACTION_DRAG_ENTERED:
+                break;
+            case DragEvent.ACTION_DRAG_EXITED:
+                break;
+            default:
+                return true;
         }
+
+        return true;
     }
 }
