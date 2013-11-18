@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * Created by parksuyeong on 2013. 10. 28..
  */
 public class LocalDB extends SQLiteOpenHelper {
-    private static int DB_VERSION = 20131109;
+    private static int DB_VERSION = 20131121;
 
     public LocalDB(Context context) {
         super(context, "db_user", null, DB_VERSION);
@@ -18,12 +18,13 @@ public class LocalDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE db_user (id integer primary key autoincrement, content TEXT, priority int);");
+        db.execSQL("CREATE TABLE db_user (_id integer primary key autoincrement, content TEXT, priority int);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("ALTER TABLE db_user ADD COLUMN priority int;");
+//        db.execSQL("DROP TABLE db_user;");
+//        db.execSQL("CREATE TABLE db_user (_id integer primary key autoincrement, content TEXT, priority int);");
     }
 }
 

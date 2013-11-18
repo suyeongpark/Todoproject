@@ -3,8 +3,10 @@ package com.example.todo.activity;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Menu;
@@ -15,9 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.example.todo.R;
+import com.example.todo.db.LocalDB;
 import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
@@ -52,18 +56,28 @@ public class MainActivity extends Activity implements View.OnDragListener {
             }
         });
 
-        String[] myStringArray = {"ABC", "DEF"};
-
-        ArrayAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);
-
-        _list_todo = (ListView)findViewById(R.id.list_todo);
-        _list_todo.setAdapter(listAdapter);
+        PersistantModel.initialize(this);
 
 //        _layout_todolist = (ViewGroup)findViewById(R.id.todoListLayout);
 //        _layout_todolist.setOnDragListener(this);
 
-        PersistantModel.initialize(this);
 //        loadToDoList();
+
+
+
+        String[] fromColumns = {"content"};
+        int[] toViews = {R.id.textView};
+
+        SQLiteDatabase db;
+        db = new LocalDB(this).getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM db_user ORDER BY _id", null);
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.todo_item, cursor, fromColumns, toViews, 0);
+
+//        ArrayAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);
+
+        _list_todo = (ListView)findViewById(R.id.list_todo);
+        _list_todo.setAdapter(cursorAdapter);
     }
 
     @Override
