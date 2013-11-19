@@ -35,28 +35,26 @@ public class TodoAdapter extends CursorAdapter implements View.OnClickListener {
         String content = cursor.getString(1);
 
         view.setBackgroundColor(colors[priority-1]);
+        view.setTag(new Integer(cursor.getInt(0)));
 
         TextView tv1 = (TextView)view.findViewById(R.id.textView);
         Button btn_delete = (Button)view.findViewById(R.id.delBtn);
 
         final int todoId = cursor.getInt(0);
-        Log.d("Adapter", "todoId = " + todoId);
+//        Log.d("Adapter", "todoId = " + todoId);
 
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("AdapteronClick", "todoId = " + todoId);
-                PersistantModel.deleteItem(todoId);
-                Cursor newCursor = PersistantModel.getDb().rawQuery("SELECT * FROM db_user ORDER BY _id", null);
-                changeCursor(newCursor);
-                notifyDataSetChanged();
-            }
-        });
+        btn_delete.setOnClickListener(this);
 
         tv1.setText(priority + " -- " + content);
     }
 
     @Override
     public void onClick(View view) {
+        int todoId = (Integer)((View)view.getParent()).getTag();
+//        Log.d("AdapteronClick", "todoId = " + todoId);
+        PersistantModel.deleteItem(todoId);
+        Cursor newCursor = PersistantModel.getDb().rawQuery("SELECT * FROM db_user ORDER BY _id", null);
+        changeCursor(newCursor);
+        notifyDataSetChanged();
     }
 }
