@@ -3,13 +3,17 @@ package com.example.todo;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-public class TodoAdapter extends CursorAdapter {
+import com.example.todo.db.PersistantModel;
+
+public class TodoAdapter extends CursorAdapter implements View.OnClickListener {
     private static int[] colors = {Color.parseColor("#FF0000"), Color.parseColor("#000000"), Color.parseColor("#00FF00"), Color.parseColor("#000000"), Color.parseColor("#0000FF")};
 
     private LayoutInflater _inflater;
@@ -33,7 +37,26 @@ public class TodoAdapter extends CursorAdapter {
         view.setBackgroundColor(colors[priority-1]);
 
         TextView tv1 = (TextView)view.findViewById(R.id.textView);
+        Button btn_delete = (Button)view.findViewById(R.id.delBtn);
+
+        final int todoId = cursor.getInt(0);
+        Log.d("Adapter", "todoId = " + todoId);
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("AdapteronClick", "todoId = " + todoId);
+                PersistantModel.deleteItem(todoId);
+                Cursor newCursor = PersistantModel.getDb().rawQuery("SELECT * FROM db_user ORDER BY _id", null);
+                changeCursor(newCursor);
+                notifyDataSetChanged();
+            }
+        });
 
         tv1.setText(priority + " -- " + content);
+    }
+
+    @Override
+    public void onClick(View view) {
     }
 }
