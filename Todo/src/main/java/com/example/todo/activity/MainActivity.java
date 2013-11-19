@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.todo.R;
+import com.example.todo.TodoAdapter;
 import com.example.todo.db.PersistantModel;
 import com.example.todo.view.TodoItemView;
 
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
     private Spinner _spinner_priority;
 
     private SimpleCursorAdapter _cursorAdapter;
+    private TodoAdapter _todoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,11 @@ public class MainActivity extends Activity {
 
         SQLiteDatabase db = PersistantModel.getDb();
         Cursor cursor = db.rawQuery("SELECT * FROM db_user ORDER BY _id", null);
-        _cursorAdapter = new SimpleCursorAdapter(this, R.layout.todo_item, cursor, fromColumns, toViews, 0);
+//        _cursorAdapter = new SimpleCursorAdapter(this, R.layout.todo_item, cursor, fromColumns, toViews, 0);
+        _todoAdapter = new TodoAdapter(this, cursor, 0);
 
         _list_todo = (ListView)findViewById(R.id.list_todo);
-        _list_todo.setAdapter(_cursorAdapter);
+        _list_todo.setAdapter(_todoAdapter);
     }
 
     @Override
@@ -75,8 +78,10 @@ public class MainActivity extends Activity {
 
     public void deleteTodoItem(int id, TodoItemView item) {
         Cursor newCursor = PersistantModel.getDb().rawQuery("SELECT * FROM db_user ORDER BY _id", null);
-        _cursorAdapter.changeCursor(newCursor);
-        _cursorAdapter.notifyDataSetChanged();
+//        _cursorAdapter.changeCursor(newCursor);
+//        _cursorAdapter.notifyDataSetChanged();
+        _todoAdapter.changeCursor(newCursor);
+        _todoAdapter.notifyDataSetChanged();
 
 //        _layout_todolist.removeView(item.getView());
     }
@@ -108,7 +113,9 @@ public class MainActivity extends Activity {
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
         Cursor newCursor = PersistantModel.getDb().rawQuery("SELECT * FROM db_user ORDER BY _id", null);
-        _cursorAdapter.changeCursor(newCursor);
-        _cursorAdapter.notifyDataSetChanged();
+//        _cursorAdapter.changeCursor(newCursor);
+//        _cursorAdapter.notifyDataSetChanged();
+        _todoAdapter.changeCursor(newCursor);
+        _todoAdapter.notifyDataSetChanged();
     }
 }
